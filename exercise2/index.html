@@ -1,0 +1,68 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Exercise 2</title>
+    <meta name="description" content="Exercise 2">
+    <meta name="author" content="Aries Jiez Lawsin">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <section class="py-5">
+        <div class="container">
+            <div id="accordion"></div>
+        </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"
+        integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg=="
+        crossorigin="anonymous"></script>
+</body>
+
+<script id="accordion-template" type="text/x-handlebars-template">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-{{index}}"
+                {{#if index}} aria-expanded="false" {{else}} aria-expanded="true" {{/if}}
+                 aria-controls="collapse-{{index}}">
+                    {{title}}
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-{{index}}" class="collapse {{#if index}} hidden {{ else }} show {{/if}}" data-parent="#accordion">
+            <div class="card-body">
+                {{{content}}}
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    (function () {
+        $.getJSON("https://raw.githubusercontent.com/jiezlawsin/frontend-assessment/master/data.json", {
+            format: "json"
+        }).done(function (data) {
+            data.forEach((context, index) => {
+                context.index = index;
+                var source = document.getElementById("accordion-template").innerHTML;
+                var template = Handlebars.compile(source);
+                var html = template(context);
+                $('#accordion').append(html);
+            });
+        });
+    })();
+</script>
+
+</html>
